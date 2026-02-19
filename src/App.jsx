@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef} from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 
 
 function App() {
@@ -9,35 +9,35 @@ function App() {
 
   const passwordRef = useRef(null);
 
-  const passwordgenerator = useCallback(()=>{
+  const passwordgenerator = useCallback(() => {
     let pass = ""
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
-    if(numallowed) str += "0123456789"
-    if(charallowed) str += "!@#$%^&*()_+"
+    if (numallowed) str += "0123456789"
+    if (charallowed) str += "!@#$%^&*()_+"
 
     for (let i = 1; i <= length; i++) {
-      const char = Math.floor(Math.random()*str.length);
+      const char = Math.floor(Math.random() * str.length);
       pass += str.charAt(char)
     }
     setpassword(pass)
-  }, [length,numallowed,charallowed,setpassword]);
+  }, [length, numallowed, charallowed, setpassword]);
 
-  useEffect(()=>{
+  useEffect(() => {
     passwordgenerator()
-  },[length,numallowed,charallowed,passwordgenerator]
-)
+  }, [length, numallowed, charallowed, passwordgenerator]
+  )
 
-const copypassword = useCallback(()=>{
-  passwordRef.current?.select();
-  window.navigator.clipboard.writeText(password);
-},[password])
+  const copypassword = useCallback(() => {
+    passwordRef.current?.select();
+    window.navigator.clipboard.writeText(password);
+  }, [password])
 
   return (
     <>
       <h1 className='text-3xl font-bold underline text-center text-white'>PASSWORD GENERATOR</h1>
       <div className='flex shadow rounded-lg overflow-hidden mb-4 mt-10'>
-        <input type="text" value={password} className='outline-none w-full py-1 px-3' placeholder='password' ref={passwordRef}/>
+        <input type="text" value={password} className='outline-none w-full py-1 px-3' placeholder='password' ref={passwordRef} />
         <button className='outline-none bg-blue-700 text-white px-3 py-0.5 shrink-0' onClick={copypassword}>copy</button>
       </div>
 
@@ -45,17 +45,17 @@ const copypassword = useCallback(()=>{
 
         <div className='flex items-center gap-x-1 text-white'>
           <input type="range" min={6} max={100} value={length}
-          className='cursor-pointer'
-          onChange={(e)=> setlength(e.target.value)}/>
+            className='cursor-pointer'
+            onChange={(e) => setlength(Number(e.target.value))} />
           <label>length: {length}</label>
         </div>
         <div className='flex items-center gap-x-1 text-white'>
-          <input type="checkbox" defaultChecked={numallowed} onChange={()=>setnumallowed(prev => !prev)} />
-          <label>Numbers</label>
+          <input type="checkbox" checked={numallowed} id="numberInput" onChange={() => setnumallowed(prev => !prev)} />
+          <label htmlFor="numberInput">Numbers</label>
         </div>
         <div className='flex items-center gap-x-1 text-white'>
-          <input type="checkbox" defaultChecked={charallowed} onChange={()=>setcharallowed(prev => !prev)} />
-          <label>Characters</label>
+          <input type="checkbox" checked={charallowed} id="charInput" onChange={() => setcharallowed(prev => !prev)} />
+          <label htmlFor="charInput">Characters</label>
         </div>
       </div>
     </>
